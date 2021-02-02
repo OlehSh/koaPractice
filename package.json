@@ -1,0 +1,44 @@
+{
+  "name": "koapractice",
+  "version": "1.0.0",
+  "description": "practice in koa and multi c services",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./src/index.ts",
+    "dev": "ts-node-dev --inspect -- ./src/index.ts",
+    "test": "mocha --exit -r ts-node/register 'src/tests/**/**.test.ts'",
+    "test:coverage": "nyc npm run test"
+  },
+  "author": "Oleg Shubin",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/router": "^10.0.0",
+    "dotenv": "^8.2.0",
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-joi-router": "^7.0.0",
+    "koa-logger": "^3.2.1",
+    "neo4j-driver": "^4.2.1",
+    "ts-node": "^9.1.0"
+  },
+  "devDependencies": {
+    "@types/eslint": "^7.2.6",
+    "@types/chai": "^4.2.14",
+    "@types/dotenv": "^8.2.0",
+    "@types/jest": "^26.0.16",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^14.14.10",
+    "@types/koa-joi-router": "^5.2.4",
+    "@types/koa": "^2.11.6",
+    "@types/koa-router": "^7.4.1",
+    "@types/koa-logger": "^3.1.1",
+    "@types/supertest": "^2.0.10",
+    "eslint": "^7.15.0",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "nyc": "^15.1.0",
+    "supertest": "^6.0.1",
+    "typescript": "^4.1.2",
+    "ts-node-dev": "^1.0.0"
+  }
+}
