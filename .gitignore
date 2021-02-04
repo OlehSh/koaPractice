@@ -1,4 +1,4 @@
-# Created by .ignore support plugin (hsz.mobi)
+.idea
 ### Node template
 # Logs
 logs
@@ -27,20 +27,10 @@ node_modules/
 # Optional eslint cache
 .eslintcache
 
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
 
 # Output of 'npm pack'
 *.tgz
 
-# Yarn Integrity file
-.yarn-integrity
 
 # dotenv environment variables file
 .env
