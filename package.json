@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "dev": "ts-node-dev --inspect -- ./src/index.ts",
+    "dev": "cross-env LOGLEVEL=debug ts-node-dev --inspect -- ./src/index.ts",
+    "neo4j:migrate:run": "neo4j-data-migrate app --database myapp",
+    "neo4j:migrate:rollback:all": "neo4j-data-migrate app zero --database myapp",
+    "neo4j:migrate:rollback": "neo4j-data-migrate app ${Index} --database myapp",
     "test": "mocha --exit -r ts-node/register 'src/tests/**/**.test.ts'",
     "test:coverage": "nyc npm run test"
   },
@@ -18,7 +21,8 @@
     "koa-body": "^4.2.0",
     "koa-joi-router": "^7.0.0",
     "koa-logger": "^3.2.1",
-    "neo4j-driver": "^4.2.1",
+    "neo4j-data-migrations": "^2.0.3",
+    "neo4j-driver": "^4.2.2",
     "ts-node": "^9.1.0"
   },
   "devDependencies": {
@@ -33,6 +37,7 @@
     "@types/koa-router": "^7.4.1",
     "@types/koa-logger": "^3.1.1",
     "@types/supertest": "^2.0.10",
+    "cross-env": "^7.0.3",
     "eslint": "^7.15.0",
     "chai": "^4.2.0",
     "mocha": "^8.2.1",
@@ -40,5 +45,22 @@
     "supertest": "^6.0.1",
     "typescript": "^4.1.2",
     "ts-node-dev": "^1.0.0"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true,
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "include": [
+      "src"
+    ],
+    "exclude": [
+      "src/tests",
+      "src/index.ts",
+      "src/registry.ts",
+      "src/env.ts"
+    ]
   }
 }
