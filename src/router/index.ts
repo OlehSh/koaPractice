@@ -1,9 +1,8 @@
-import * as router from "koa-joi-router";
-import home from "./home";
+import router from "koa-joi-router";
+import v1 from "./v1";
+
 const api = router();
 
-api.prefix('/v1/');
-
-api.use(home.middleware())
+api.use(v1.middleware())
 
 export default api;
