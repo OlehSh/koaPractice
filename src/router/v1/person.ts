@@ -2,22 +2,25 @@ import router from "koa-joi-router";
 import checkAuthentication from "../../midlware/checkAuthentication";
 
 const person = router();
-person.get('/person', checkAuthentication,(ctx) => {
+person.prefix('/person/')
+person.get('/', (ctx) => {
   ctx.body = 'get persons'
 })
-person.get('/person/:id', checkAuthentication, (ctx) => {
+person.get('/:id', (ctx) => {
+
+  // console.log('TEST', ctx.)
   ctx.body = 'get person by id'
 })
 
-person.post('/person', (ctx) => {
+person.post('/', (ctx) => {
   ctx.body = 'add new persons'
 })
 
-person.post('/person/:id', (ctx) => {
+person.post('/:id', (ctx) => {
   ctx.body = 'edit person data'
 })
 
-person.delete('/person', (ctx) => {
+person.delete('/', (ctx) => {
   ctx.body = 'delete persons'
 })
 

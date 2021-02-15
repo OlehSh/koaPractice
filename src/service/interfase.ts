@@ -1,9 +1,13 @@
 import { PROFILE_TYPE } from "../constants/constants";
 
-export default interface ProfileData {
+export interface ProfileData {
   name: string,
   email: string,
   password: string,
   id: string,
-  type: PROFILE_TYPE
+}
+
+export interface QueryParams {
+  limit?: number,
+  orderBy?: string,
 }

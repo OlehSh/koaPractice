@@ -1,14 +1,24 @@
 import Koa from 'koa';
+import session from "koa-session";
 import koaBody from "koa-body";
 import logger from "koa-logger"
 import api from "./router/index";
 import koaPassport from "koa-passport";
+import initStrategy from "./initStrategy";
+import env from "./env";
 
 const app = new Koa<Koa.DefaultState>();
 
+app.keys = [env.secretKey];
+
+// const CONFIG = {
+//   maxAge: 86400000,
+// };
+app.use(session({}, app));
 app.use(logger())
 app.use(koaPassport.initialize())
-app.use(koaPassport.session())
+// app.use(koaPassport.session())
+initStrategy()
 app.use(async (ctx, next) => {
   try {
     await next();

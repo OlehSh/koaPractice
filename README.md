@@ -1,7 +1,7 @@
 # koaPractice
 ### Environment
 * Node.js version - >=14
-* Neo4j version - 4.2 https://neo4j.com/
+* Neo4jDriver version - 4.2 https://neo4j.com/
 * docker
 
 ### Run project

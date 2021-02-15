@@ -1,7 +1,6 @@
 import { Context, Next } from "koa";
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default async function (ctx: Context, next: Next) {
+export default async function (ctx: Context, next: Next): Promise<void> {
   if(ctx.isAuthenticated()) {
     await next()
   } else  {

@@ -1,27 +1,64 @@
-import NeoModel from "./NeoModel";
 import { v4 } from "uuid"
-import bcrypt from "bcrypt"
-import ProfileData from "./interfase";
-import env from "../env";
+import { ProfileData, QueryParams } from "./interfase";
+import neo4j from "../neo4jDriver";
+import { QueryResult } from "neo4j-driver";
 
-interface ProfileSignUp {
+interface ProfileInfo {
   name: string,
   email: string,
-  password: string
+  id: string
 }
+class Profile {
 
-class Profile extends NeoModel{
-  async fetchAll(): Promise<void> {
-    console.log('Feth all profiles');
+  async fetchAll(queryParams: QueryParams = {}): Promise<QueryResult> {
+    const { limit, orderBy } = queryParams;
+    let query = `MATCH (n:Person) Return n`;
+    if (orderBy) {
+      query = `${query} ORDER BY n.${orderBy}`
+    }
+    if (limit) {
+      query = `${query} LIMIT ${limit}`
+    }
+    return neo4j.session!.run(query)
   }
-  async fetch(id: string): Promise<void> {
-    const profile = await this.session.run('Match')
+
+  async fetch(id: string): Promise<ProfileInfo> {
     console.log('Fetch single profile', id)
+    const queryResult = await neo4j.session!.run(`MATCH (n:Profile { id: $id }) RETURN n.name, n.email, n.id`, {id})
+    const profile = queryResult.records[0] ? queryResult.records[0] : {}
+    return profile as ProfileInfo
+
   }
-  async add(data: Partial<ProfileData>): Promise<void> {
+  async fetchAuth(params: { email: string }): Promise<ProfileData | null> {
+    const { email } = params;
+    const result: QueryResult = await neo4j.session!.run(`MATCH (n:Profile { email: $email}) RETURN n LIMIT 1`, {email})
+    if (!result.records[0]) {
+      return null;
+    }
+    const profile = result.records[0].get('n').properties;
+    return profile as ProfileData;
+  }
+  async add(data: Partial<ProfileData>): Promise<ProfileInfo> {
     const id: string = v4()
-    const password: string = await bcrypt.hash(data.password!, env.saltRounds)
-    await this.session.run(`CREATE (n:Profile {name: ${data.name!}, email: ${data.email!}, password: ${password}, id: ${id})`)
+    const { name, email, password } = data
+    const queryResult = await neo4j.session!.run(
+      `CREATE ( n:Profile {id: $id, name: $name, email: $email, password: $password } ) RETURN n`,
+      {id, name, email, password})
+    console.log(queryResult);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password: p, ...profile } = queryResult.records[0].get('n').properties as ProfileData;
+    return profile as ProfileInfo;
+  }
+
+  delete(id: string): Promise<QueryResult> {
+    console.log('DELETE SERVICE', id)
+    return neo4j.session!.run(`MATCH (n:Profile { id: $id }) DETACH DELETE n`, {id})
+  }
+
+  deleteRelation(id: number, relation: any) {
+    console.log('DELETE ID', id)
+    console.log('DELETE RELATION', relation)
+    return 'DELETE RELATION'
   }
 }
 

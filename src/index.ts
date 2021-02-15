@@ -1,9 +1,9 @@
 import app from "./app";
-import neo4j from './neo4g';
+import neo4j from './neo4jDriver';
 import env from "./env";
 
-const AppRun = () => {
-  neo4j.init()
+const AppRun = async (): Promise<void> => {
+  await neo4j.init();
   app.listen(env.port);
 }
 void AppRun()
