@@ -7,3 +7,9 @@ export enum CONTENT_TYPE {
   TEXT = 'text',
   MULTIPART = 'multipart'
 }
+
+export enum RELATION_DIRECTION {
+  TWO_WAY = 0,
+  OUT = 1,
+  IN = 2
+}

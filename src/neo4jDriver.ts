@@ -1,6 +1,5 @@
 import neo4j, { Session, Driver } from 'neo4j-driver';
 import env from "./env";
-import { rejects } from "assert";
 
 class Neo4jDriver {
   driver?: Driver;

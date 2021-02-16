@@ -1,7 +1,7 @@
 import router from "koa-joi-router";
-import Profile from "../../service/Profile";
+import Profile, { ProfileData } from "../../service/Profile";
 import { CONTENT_TYPE } from "../../constants/constants";
-import { ProfileData } from "../../service/interfase";
+
 import { profileSignupBody } from "../../validate/profile"
 import { loginBody } from "../../validate/auth";
 import { createToken } from "../../helpers/jwtHelper";
@@ -29,7 +29,8 @@ auth.post('/sighup', { validate: { type: CONTENT_TYPE.JSON, body: profileSignupB
   ctx.body = 'add new profile'
   const profileInfo: Partial<ProfileData> = ctx.request.body
   const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
-  ctx.body =  await Profile.add({...profileInfo, password})
+  const { name, email, id } = await Profile.add({...profileInfo, password})
+  ctx.body =  { name, email, id } ;
 })
 
 export default auth;

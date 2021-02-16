@@ -1,8 +1,8 @@
 import { Joi } from "koa-joi-router";
 
 const loginBody = {
-  email: Joi.string(),
-  password: Joi.string()
+  email: Joi.string().required(),
+  password: Joi.string().required()
 }
 
 export {

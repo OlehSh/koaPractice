@@ -27,7 +27,9 @@
     "SharedArrayBuffer": "readonly"
   },
   "rules": {
-    "indent": ["error", 2],
+    "indent": ["error", 2, {
+      "SwitchCase": 1
+    }],
     "no-underscore-dangle": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/camelcase": "off",
