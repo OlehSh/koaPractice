@@ -1,21 +1,21 @@
 import { v4 } from "uuid"
-import { QueryParams, Relation } from "./interfase";
+import { LABEL, QueryParams, Relation } from "./interfase";
 import neo4j from "../neo4jDriver";
 import { QueryResult } from "neo4j-driver";
-import { RELATION_DIRECTION } from "../constants/constants";
+import { createRelationQuery, createUpdateQuery } from "../helpers/cyferQueryHelper";
 
 interface PersonData {
   name: string,
   lastName: string,
   id: string,
-  relation: Relation
+  relation: Relation | any
 }
 
 class Person {
 
   async fetchAll(queryParams: QueryParams = {}): Promise<QueryResult> {
     const { limit, orderBy } = queryParams;
-    let query = `MATCH (n:Person) Return n`;
+    let query = `MATCH (n:${LABEL.PERSON}) Return n`;
     if (orderBy) {
       query = `${query} ORDER BY n.${orderBy}`
     }
@@ -25,47 +25,54 @@ class Person {
     return neo4j.session!.run(query)
   }
 
-  async fetch(id: string): Promise<any> {
+  async fetch(id: string): Promise<PersonData | null> {
     console.log('Fetch single Person', id)
-    return;
+    const queryResult = await neo4j.session!.run(`MATCH( n:${LABEL.PERSON} { id: $id }) RETURN n`, {id})
+    if (!queryResult.records[0]) {
+      return null;
+    }
+    return queryResult.records[0].get('n').properties as PersonData;
   }
 
   async add(data: Partial<PersonData>): Promise<PersonData> {
     const id: string = v4()
     const {name, lastName = '', relation } = data;
     const tx = neo4j.session!.beginTransaction();
-    const createQuery = await tx!.run(`CREATE ( n:Person {id: $id, name: $name, lastName: $lastName } ) RETURN n`,
+    const createQuery = await tx.run(`CREATE ( n:${LABEL.PERSON} {id: $id, name: $name, lastName: $lastName } ) RETURN n`,
       {id, name, lastName: lastName });
     const newPerson = createQuery.records[0].get('n').properties as PersonData;
 
     if (relation) {
-      const { id: bId, type: relType, direction, description: relDescription = '' }  =relation
-      const relKey = relType.toUpperCase();
-      let relQuery = `MATCH (a:Person { id: $aId }) , (b:Person { id: $bId })`;
-      switch (direction) {
-        case RELATION_DIRECTION.IN:
-          relQuery = `${relQuery} CREATE (a)<-[r:${relKey} {description: $relDescription}]-(b) RETURN r`;
-          break
-        case RELATION_DIRECTION.OUT:
-          relQuery = `${relQuery} CREATE (a)-[r:${relKey} {description: $relDescription}]->(b) RETURN r`
-          break
-        case RELATION_DIRECTION.TWO_WAY:
-          relQuery = `${relQuery} CREATE (a)-[r:${relKey} {description: $relDescription}]->(b) `;
-          relQuery = `${relQuery} CREATE (a)<-[r_in:${relKey} {description: $relDescription}]-(b) RETURN r`;
-          break
-        default:
-          throw new Error('Relation Direction missing')
-      }
-      const relationQuery = await tx!.run(relQuery, { aId: id, bId, relDescription})
+      const { id: mId, type: relType, direction, description: relDescription = '' }  =relation
+      const relQuery = createRelationQuery(LABEL.PERSON, LABEL.PERSON, {type: relType, direction, props: {description: relDescription}})
+      const relationQuery = await tx.run(relQuery, { nId: id, mId, relDescription})
       newPerson.relation = relationQuery.records[0].get('r').properties
     }
     await tx.commit();
     return newPerson;
   }
 
+  async update(id: string, data: Partial<PersonData> ): Promise<PersonData> {
+    const {relation, ...props } = data
+    const query = createUpdateQuery(LABEL.PERSON, props)
+    const tx = neo4j.session!.beginTransaction();
+    const queryResult = await tx.run(query, {id})
+    const person = queryResult.records[0].get('n').properties as PersonData
+    if(relation) {
+      const { id: relId, type, direction, description } = relation;
+      const relQuery = createRelationQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
+      console.log('ID', id)
+      console.log('relId', relId)
+      const relResult = await tx.run(relQuery, { nId: id, mId: relId})
+      person.relation = relResult.records[0].toObject()
+    }
+    await tx.commit();
+    return person
+  }
+
   async delete(id: string): Promise<QueryResult> {
     console.log('DELETE SERVICE', id)
-    return neo4j.session!.run(`MATCH (n:Person { id: $id }) DETACH DELETE n`, {id});
+    return neo4j.session!.run(`MATCH (n:${LABEL.PERSON} { id: $id }) DETACH DELETE n`, {id});
   }
 
   deleteRelation(id: number, relation: any) {
