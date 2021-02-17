@@ -2,7 +2,12 @@ import { v4 } from "uuid"
 import { LABEL, QueryParams, Relation } from "./interfase";
 import neo4j from "../neo4jDriver";
 import { QueryResult } from "neo4j-driver";
-import { createRelationQuery, createUpdateQuery } from "../helpers/cyferQueryHelper";
+import {
+  relationByNodesIdQuery,
+  updateNodeByIdQuery,
+  deleteRelationByNodesIdQuery
+} from "../helpers/cyferQueryHelper";
+import { RELATION_DIRECTION } from "../constants/constants";
 
 interface PersonData {
   name: string,
@@ -44,7 +49,7 @@ class Person {
 
     if (relation) {
       const { id: mId, type: relType, direction, description: relDescription = '' }  =relation
-      const relQuery = createRelationQuery(LABEL.PERSON, LABEL.PERSON, {type: relType, direction, props: {description: relDescription}})
+      const relQuery = relationByNodesIdQuery(LABEL.PERSON, LABEL.PERSON, {type: relType, direction, props: {description: relDescription}})
       const relationQuery = await tx.run(relQuery, { nId: id, mId, relDescription})
       newPerson.relation = relationQuery.records[0].get('r').properties
     }
@@ -54,15 +59,13 @@ class Person {
 
   async update(id: string, data: Partial<PersonData> ): Promise<PersonData> {
     const {relation, ...props } = data
-    const query = createUpdateQuery(LABEL.PERSON, props)
+    const query = updateNodeByIdQuery(LABEL.PERSON, props)
     const tx = neo4j.session!.beginTransaction();
     const queryResult = await tx.run(query, {id})
     const person = queryResult.records[0].get('n').properties as PersonData
     if(relation) {
       const { id: relId, type, direction, description } = relation;
-      const relQuery = createRelationQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
-      console.log('ID', id)
-      console.log('relId', relId)
+      const relQuery = relationByNodesIdQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
       const relResult = await tx.run(relQuery, { nId: id, mId: relId})
       person.relation = relResult.records[0].toObject()
     }
@@ -75,10 +78,10 @@ class Person {
     return neo4j.session!.run(`MATCH (n:${LABEL.PERSON} { id: $id }) DETACH DELETE n`, {id});
   }
 
-  deleteRelation(id: number, relation: any) {
-    console.log('DELETE ID', id)
-    console.log('DELETE RELATION', relation)
-    return 'DELETE RELATION'
+  async deleteRelation(id: string, relation: {id: string, nodeType: LABEL, type: string, direction: RELATION_DIRECTION}) {
+    const { id: relNodeId, nodeType, direction, type } = relation;
+    const querySttring = deleteRelationByNodesIdQuery(id, relNodeId, {direction, type})
+    return neo4j.session!.run(`MATCH (n:${LABEL.PERSON} {id: $id) (m:${nodeType.toUpperCase()} {id: $relNodeId}) DELETE r`, {id, relNodeId})
   }
 }
 

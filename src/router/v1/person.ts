@@ -40,7 +40,9 @@ person.delete('/:id', koaPassport.authenticate('jwt', {session: false}), async (
   ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
   ctx.body = 'success'
 })
-person.delete('relation/:id', koaPassport.authenticate('jwt', {session: false}), async (ctx) => {
-  ctx.body = "delete RELATION from person"
+person.delete('/:id/relation', koaPassport.authenticate('jwt', {session: false}), async (ctx) => {
+  const { id }: {id: string} = ctx.params;
+  const { nodeId, type }: {id: string} = ctx.request.body;
+  ctx.body = await Person.deleteRelation(id, {id: nodeId, type})
 })
 export default person;
