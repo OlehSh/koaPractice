@@ -11,13 +11,10 @@ const app = new Koa<Koa.DefaultState>();
 
 app.keys = [env.secretKey];
 
-// const CONFIG = {
-//   maxAge: 86400000,
-// };
 app.use(session({}, app));
 app.use(logger())
 app.use(koaPassport.initialize())
-// app.use(koaPassport.session())
+
 initStrategy()
 app.use(async (ctx, next) => {
   try {

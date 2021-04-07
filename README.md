@@ -5,7 +5,7 @@
 * docker
 
 ### Run project
- 1 - run <code> npm run docker</code> to run neo4j docker container
+ 1 - run <code> npm run docker:up</code> to run neo4j docker container
  2 - connect to your neo4j server and create a new database with custom name
  3 - run <code> npm run neo4j:migrate:run</code> to run neo4j migrations
  4 - <code> npm start </code> run project

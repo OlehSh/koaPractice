@@ -9,7 +9,7 @@ export enum CONTENT_TYPE {
 }
 
 export enum RELATION_DIRECTION {
-  TWO_WAY = 0,
-  OUT = 1,
-  IN = 2
+  OUT = 0,
+  IN = 1,
+  TWO_WAY = 2
 }

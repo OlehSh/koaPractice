@@ -2,11 +2,7 @@ import { v4 } from "uuid"
 import { LABEL, QueryParams, Relation } from "./interfase";
 import neo4j from "../neo4jDriver";
 import { QueryResult } from "neo4j-driver";
-import {
-  relationByNodesIdQuery,
-  updateNodeByIdQuery,
-  deleteRelationByNodesIdQuery
-} from "../helpers/cyferQueryHelper";
+import { deleteRelationByNodesIdQuery, relationByNodesIdQuery, updateNodeByIdQuery } from "../helpers/cyferQueryHelper";
 import { RELATION_DIRECTION } from "../constants/constants";
 
 interface PersonData {
@@ -74,14 +70,13 @@ class Person {
   }
 
   async delete(id: string): Promise<QueryResult> {
-    console.log('DELETE SERVICE', id)
     return neo4j.session!.run(`MATCH (n:${LABEL.PERSON} { id: $id }) DETACH DELETE n`, {id});
   }
 
-  async deleteRelation(id: string, relation: {id: string, nodeType: LABEL, type: string, direction: RELATION_DIRECTION}) {
-    const { id: relNodeId, nodeType, direction, type } = relation;
-    const querySttring = deleteRelationByNodesIdQuery(id, relNodeId, {direction, type})
-    return neo4j.session!.run(`MATCH (n:${LABEL.PERSON} {id: $id) (m:${nodeType.toUpperCase()} {id: $relNodeId}) DELETE r`, {id, relNodeId})
+  async deleteRelation(id: string, relation: {id: string, nodeLabel: LABEL, relLabel: string, direction: RELATION_DIRECTION}) {
+    const { id: relNodeId, nodeLabel, direction, relLabel } = relation;
+    const queryString = deleteRelationByNodesIdQuery(LABEL.PERSON, nodeLabel, {direction, type: relLabel})
+    return neo4j.session!.run(queryString, {id, relNodeId})
   }
 }
 

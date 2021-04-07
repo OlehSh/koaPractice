@@ -25,8 +25,7 @@ auth.post('/login',
     ctx.body = {token}
   })
 
-auth.post('/sighup', { validate: { type: CONTENT_TYPE.JSON, body: profileSignupBody }}, async (ctx) => {
-  ctx.body = 'add new profile'
+auth.post('/signup', { validate: { type: CONTENT_TYPE.JSON, body: profileSignupBody }}, async (ctx) => {
   const profileInfo: Partial<ProfileData> = ctx.request.body
   const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
   const { name, email, id } = await Profile.add({...profileInfo, password})

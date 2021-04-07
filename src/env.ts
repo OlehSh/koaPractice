@@ -4,8 +4,6 @@ import dotenv from 'dotenv';
 const inTest = typeof global.it === 'function';
 const dotenvPath = inTest ? path.join(__dirname, 'tests', '.env') : path.join(__dirname, '..', '.env');
 dotenv.config({path: dotenvPath});
-
-
 export default {
   saltRounds: process.env.SALT_ROUNDS || 16,
   port: process.env.PORT || 4000,
