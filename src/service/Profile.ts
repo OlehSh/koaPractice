@@ -1,6 +1,7 @@
 import { v4 } from "uuid"
+import { container } from "tsyringe";
 import { QueryParams } from "./interfase";
-import neo4j from "../neo4jDriver";
+import Neo4jDriver from "../neo4jDriver";
 import { QueryResult } from "neo4j-driver";
 
 interface ProfileInfo {
@@ -12,6 +13,8 @@ interface ProfileInfo {
 export interface ProfileData extends ProfileInfo {
   password: string
 }
+
+const neo4j = container.resolve(Neo4jDriver)
 
 class Profile {
 

@@ -1,9 +1,12 @@
 import { v4 } from "uuid"
+import { container } from "tsyringe";
 import { LABEL, QueryParams, Relation } from "./interfase";
-import neo4j from "../neo4jDriver";
+import Neo4jDriver from "../neo4jDriver";
 import { QueryResult } from "neo4j-driver";
 import { deleteRelationByNodesIdQuery, relationByNodesIdQuery, updateNodeByIdQuery } from "../helpers/cyferQueryHelper";
 import { RELATION_DIRECTION } from "../constants/constants";
+
+const neo4j = container.resolve(Neo4jDriver)
 
 interface PersonData {
   name: string,
@@ -27,7 +30,6 @@ class Person {
   }
 
   async fetch(id: string): Promise<PersonData | null> {
-    console.log('Fetch single Person', id)
     const queryResult = await neo4j.session!.run(`MATCH( n:${LABEL.PERSON} { id: $id }) RETURN n`, {id})
     if (!queryResult.records[0]) {
       return null;
@@ -57,16 +59,22 @@ class Person {
     const {relation, ...props } = data
     const query = updateNodeByIdQuery(LABEL.PERSON, props)
     const tx = neo4j.session!.beginTransaction();
-    const queryResult = await tx.run(query, {id})
-    const person = queryResult.records[0].get('n').properties as PersonData
-    if(relation) {
-      const { id: relId, type, direction, description } = relation;
-      const relQuery = relationByNodesIdQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
-      const relResult = await tx.run(relQuery, { nId: id, mId: relId})
-      person.relation = relResult.records[0].toObject()
+    try {
+      const queryResult = await tx.run(query, {id})
+      const person = queryResult.records[0].get('n').properties as PersonData
+      if(relation) {
+        const { id: relId, type, direction, description } = relation;
+        const relQuery = relationByNodesIdQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
+        const relResult = await tx.run(relQuery, { nId: id, mId: relId})
+        person.relation = relResult.records[0].toObject()
+      }
+      await tx.commit();
+      return person
+    } catch (e) {
+      await tx.rollback();
+      throw e;
     }
-    await tx.commit();
-    return person
+
   }
 
   async delete(id: string): Promise<QueryResult> {

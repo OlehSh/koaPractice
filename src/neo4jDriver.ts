@@ -1,7 +1,7 @@
 import neo4j, { Session, Driver } from 'neo4j-driver';
 import env from "./env";
 
-class Neo4jDriver {
+export default class Neo4jDriver {
   driver?: Driver;
   session?: Session;
 
@@ -10,19 +10,19 @@ class Neo4jDriver {
       try {
         this.driver = neo4j.driver(`bolt://${env.neo4j.host}:${env.neo4j.port}`, neo4j.auth.basic(env.neo4j.user, env.neo4j.password));
         this.session = this.driver.session({database: env.neo4j.dbName});
-        console.log('Neo4g session initiated', { database: env.neo4j.dbName, port: env.neo4j.port })
-        // console.log('Neo4g session efsefsdfsD', this.driver)
 
-        this.driver.verifyConnectivity().then(data => {
-          console.log('Neo4g session efsefsdfsD',  data)
-        })
-        resolve()
+        this.driver.verifyConnectivity()
+          .then(data => {
+            console.log('Neo4j session info', {database: env.neo4j.dbName, ...data})
+            return resolve()
+          })
+          .catch(e => reject(e))
       } catch (e) {
-        console.error('Neo4g connection Error', e)
-        reject(e)
+        console.error('Neo4j connection Error', e)
+        return reject(e)
       }
     })
   }
 }
 
-export default new Neo4jDriver()
+// export default new Neo4jDriver()
