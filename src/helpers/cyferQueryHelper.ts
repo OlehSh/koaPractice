@@ -13,7 +13,7 @@ interface NodeParams {
 
 const REPLACE_JSON_KEY_QUOTES_REGEXP = /"([^"]+)":/mg
 
-export const relationByNodesIdQuery = (firstNodeLabel: LABEL,  secondNodeLabel: LABEL, relationParams: RelationParams): string => {
+export const getRelationByNodesIdQuery = (firstNodeLabel: LABEL, secondNodeLabel: LABEL, relationParams: RelationParams): string => {
   const {type, direction, props } = relationParams
   const relKey = type.toUpperCase();
   let query = `MATCH (n:${firstNodeLabel} { id: $nId }) , (m:${secondNodeLabel} { id: $mId })`;

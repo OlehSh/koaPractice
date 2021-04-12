@@ -14,10 +14,11 @@ export interface ProfileData extends ProfileInfo {
   password: string
 }
 
-const neo4j = container.resolve(Neo4jDriver)
-
 class Profile {
-
+  private neo4j: Neo4jDriver
+  constructor() {
+    this.neo4j = container.resolve(Neo4jDriver)
+  }
   async fetchAll(queryParams: QueryParams = {}): Promise<QueryResult> {
     const { limit, orderBy } = queryParams;
     let query = `MATCH (n:Person) Return n`;
@@ -27,38 +28,36 @@ class Profile {
     if (limit) {
       query = `${query} LIMIT ${limit}`
     }
-    return neo4j.session!.run(query)
+    return this.neo4j.session.run(query)
   }
 
   async fetch(id: string): Promise<ProfileInfo> {
     console.log('Fetch single profile', id)
-    const queryResult = await neo4j.session!.run(`MATCH (n:Profile { id: $id }) RETURN n.name, n.email, n.id`, {id})
+    const queryResult = await this.neo4j.session.run(`MATCH (n:Profile { id: $id }) RETURN n.name, n.email, n.id`, {id})
     const profile = queryResult.records[0] ? queryResult.records[0] : {}
     return profile as ProfileInfo
 
   }
   async fetchAuth(params: { email: string }): Promise<ProfileData | null> {
     const { email } = params;
-    const result: QueryResult = await neo4j.session!.run(`MATCH (n:Profile { email: $email}) RETURN n LIMIT 1`, {email})
+    const result: QueryResult = await this.neo4j.session.run(`MATCH (n:Profile { email: $email}) RETURN n LIMIT 1`, {email})
     if (!result.records[0]) {
       return null;
     }
-    const profile = result.records[0].get('n').properties;
-    return profile as ProfileData;
+    return result.records[0].get('n').properties as ProfileData;
   }
   async add(data: Partial<ProfileData>): Promise<ProfileData> {
     const id: string = v4()
     const { name, email, password } = data
-    const queryResult = await neo4j.session!.run(
+    const queryResult = await this.neo4j.session.run(
       `CREATE ( n:Profile {id: $id, name: $name, email: $email, password: $password } ) RETURN n`,
       {id, name, email, password})
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return queryResult.records[0].get('n').properties as ProfileData;
   }
 
   async delete(id: string): Promise<QueryResult> {
     console.log('DELETE SERVICE', id)
-    return neo4j.session!.run(`MATCH (n:Profile { id: $id }) DETACH DELETE n`, {id});
+    return this.neo4j.session.run(`MATCH (n:Profile { id: $id }) DETACH DELETE n`, {id});
   }
 
   deleteRelation(id: number, relation: any) {
