@@ -1,12 +1,10 @@
 import { v4 } from "uuid"
-import { container } from "tsyringe";
+import { injectable } from "tsyringe";
 import { LABEL, QueryParams, Relation } from "./interfase";
 import Neo4jDriver from "../neo4jDriver";
-import { QueryResult, Record } from "neo4j-driver";
+import { QueryResult } from "neo4j-driver";
 import { deleteRelationByNodesIdQuery, getRelationByNodesIdQuery, updateNodeByIdQuery } from "../helpers/cyferQueryHelper";
 import { RELATION_DIRECTION } from "../constants/constants";
-
-const neo4j = container.resolve(Neo4jDriver)
 
 interface PersonData {
   name: string,
@@ -14,12 +12,10 @@ interface PersonData {
   id: string,
   relation: Relation
 }
+@injectable()
+export default class Person {
 
-class Person {
-  private neo4j: Neo4jDriver
-  constructor() {
-    this.neo4j = container.resolve(Neo4jDriver)
-  }
+  constructor(private neo4j: Neo4jDriver) {}
 
   async fetchAll(queryParams: QueryParams = {}): Promise<QueryResult> {
     const { limit, orderBy } = queryParams;
@@ -107,5 +103,3 @@ class Person {
     return this.neo4j.session.run(queryString, {id, relNodeId})
   }
 }
-
-export default new Person();

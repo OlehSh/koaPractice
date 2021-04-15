@@ -47,12 +47,6 @@ export const updateNodeByIdQuery = (label: LABEL, params: {[key: string]: any}):
   return query
 }
 
-export const createFilteredQuery = (label: LABEL, params: QueryParams): string => {
-  console.log(label)
-  console.log(params)
-  return ''
-}
-
 export const deleteRelationByNodesIdQuery = (firstNodeLabel: LABEL,  secondNodeLabel: LABEL, relationParams: RelationParams) => {
   const {direction, type } = relationParams
   const relKey = type.toUpperCase()

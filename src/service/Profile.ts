@@ -1,5 +1,5 @@
 import { v4 } from "uuid"
-import { container } from "tsyringe";
+import { container, injectable } from "tsyringe";
 import { QueryParams } from "./interfase";
 import Neo4jDriver from "../neo4jDriver";
 import { QueryResult } from "neo4j-driver";
@@ -13,12 +13,9 @@ interface ProfileInfo {
 export interface ProfileData extends ProfileInfo {
   password: string
 }
-
-class Profile {
-  private neo4j: Neo4jDriver
-  constructor() {
-    this.neo4j = container.resolve(Neo4jDriver)
-  }
+@injectable()
+export default class Profile {
+  constructor(private neo4j: Neo4jDriver) {}
   async fetchAll(queryParams: QueryParams = {}): Promise<QueryResult> {
     const { limit, orderBy } = queryParams;
     let query = `MATCH (n:Person) Return n`;
@@ -66,5 +63,3 @@ class Profile {
     return 'DELETE RELATION'
   }
 }
-
-export default new Profile();

@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import supertest from "supertest"
 import app from '../../app';
 import { expect } from "chai";

@@ -14,10 +14,10 @@ export default class Neo4jDriver {
       this.driver.verifyConnectivity()
         .then(data => {
           console.log('Neo4j session info', {database: env.neo4j.dbName, ...data})
-          // return resolve()
         })
         .catch(e => {
           console.error('Neo4j verifyConnectivity Error', e)
+          throw e
         })
     } catch (e) {
       console.error('Neo4j connection Error', e)
@@ -25,5 +25,3 @@ export default class Neo4jDriver {
     }
   }
 }
-
-// export default new Neo4jDriver()
