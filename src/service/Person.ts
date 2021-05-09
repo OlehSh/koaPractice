@@ -97,7 +97,7 @@ export default class Person {
     return this.neo4j.session.run(`MATCH (n:${LABEL.PERSON} { id: $id }) DETACH DELETE n`, {id});
   }
 
-  async deleteRelation(id: string, relation: {id: string, nodeLabel: LABEL, relLabel: string, direction: RELATION_DIRECTION}) {
+  async deleteRelation(id: string, relation: {id: string, nodeLabel: LABEL, relLabel: string, direction: RELATION_DIRECTION}): Promise<QueryResult> {
     const { id: relNodeId, nodeLabel, direction, relLabel } = relation;
     const queryString = deleteRelationByNodesIdQuery(LABEL.PERSON, nodeLabel, {direction, type: relLabel})
     return this.neo4j.session.run(queryString, {id, relNodeId})

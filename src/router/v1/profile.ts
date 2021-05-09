@@ -17,9 +17,7 @@ profile.post('/', (ctx) => {
 })
 
 profile.delete('/:id', koaPassport.authenticate('jwt', { session: false }), async (ctx) => {
-  const { id }: {id: string} = ctx.params;
-  console.log('DELETE', id)
-  const result: QueryResult = await profileService.delete(id);
+  const result: QueryResult = await profileService.delete(ctx.params.id);
   ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
   ctx.body = 'success'
 })

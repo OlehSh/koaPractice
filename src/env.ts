@@ -6,7 +6,7 @@ const dotenvPath = inTest ? path.join(__dirname, 'tests', '.env') : path.join(__
 dotenv.config({path: dotenvPath});
 export default {
   saltRounds: process.env.SALT_ROUNDS || 16,
-  port: process.env.PORT || 4000,
+  port: process.env.PORT || 3000,
   host: process.env.HOST || 'localhost',
   authStrategy: process.env.AUTH_STRATEGY || 'local',
   secretKey: process.env.SECRET_KEY || 'default_secret',
