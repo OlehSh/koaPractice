@@ -1,6 +1,6 @@
 {
   "name": "koapractice",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "practice in koa and multi c services",
   "main": "index.js",
   "repository": "https://github.com/OlehSh/koaPractice",
@@ -19,7 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^9.0.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",

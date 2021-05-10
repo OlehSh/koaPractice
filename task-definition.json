@@ -60,11 +60,6 @@
   "placementConstraints": [],
   "memory": "512",
   "taskRoleArn": "arn:aws:iam::626311794893:role/TaskNodeAppRole",
-  "compatibilities": [
-    "EC2",
-    "FARGATE"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:eu-central-1:626311794893:task-definition/NodeAppTask:1",
   "family": "NodeAppTask",
   "requiresAttributes": [
     {
@@ -117,13 +112,8 @@
     }
   ],
   "pidMode": null,
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
   "networkMode": "awsvpc",
   "cpu": "256",
-  "revision": 1,
-  "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
   "volumes": []
