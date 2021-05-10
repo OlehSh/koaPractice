@@ -1,6 +1,6 @@
 {
   "name": "koapractice",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "practice in koa and multi c services",
   "main": "index.js",
   "repository": "https://github.com/OlehSh/koaPractice",
