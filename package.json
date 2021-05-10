@@ -42,7 +42,6 @@
     "@types/bcrypt": "^3.0.0",
     "@types/chai": "^4.2.14",
     "@types/chai-as-promised": "^7.1.2",
-    "@types/dotenv": "^8.2.0",
     "@types/eslint": "^7.2.6",
     "@types/jest": "^26.0.16",
     "@types/jsonwebtoken": "^8.5.0",
