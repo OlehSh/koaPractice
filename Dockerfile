@@ -6,7 +6,7 @@ ENV PORT=$PORT
 
 WORKDIR /app
 
-ADD package.json ./app/package.json
+ADD package.json /app/package.json
 
 RUN npm install
 
