@@ -14,7 +14,7 @@ module.exports = {
       tx.run(`CREATE CONSTRAINT profile_name_exists IF NOT EXISTS ON (n:Profile) ASSERT exists(n.name)`),
       tx.run(`CREATE CONSTRAINT profile_password_exists IF NOT EXISTS ON (n:Profile) ASSERT exists(n.password)`)
     ])
-    tx.commit();
+    await tx.commit();
     session.close();
   },
   backward: async (driver) => {
@@ -30,7 +30,7 @@ module.exports = {
       tx.run('DROP CONSTRAINT profile_name_exists IF EXISTS'),
       tx.run('DROP CONSTRAINT profile_password_exists IF EXISTS')
     ])
-    tx.commit();
+    await tx.commit();
     session.close();
   },
 };
