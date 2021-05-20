@@ -1,13 +1,19 @@
-FROM node:14
+FROM node:14-alpine as app
+
+ARG PORT
+
+ENV PORT=$PORT
 
 WORKDIR /app
 
-ADD package.json /app/package.json
+COPY package*.json ./
 
 RUN npm install
 
-ADD . /app
+COPY  . .
 
-EXPOSE 3000
+RUN npm run build
+# v7Y7jDibx27mVVufHqseUmjHBfdadw
+EXPOSE $ARG_PORT
 
-CMD [ "npm", "run", "start" ]
+CMD [ "npm", "start" ]
