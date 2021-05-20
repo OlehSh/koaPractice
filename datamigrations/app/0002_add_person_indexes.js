@@ -1,4 +1,4 @@
-const constants = require('./constants')
+const constants = require('../constants');
 module.exports = {
   name: 'Add person indexes',
   forward: async (driver) => {
