@@ -6,11 +6,11 @@ ENV PORT=$PORT
 
 WORKDIR /app
 
-COPY package.json ./
+ADD package.json ./app/package.json
 
 RUN npm install
 
-COPY  . .
+ADD  . /app
 
 RUN npm run build
 # v7Y7jDibx27mVVufHqseUmjHBfdadw
