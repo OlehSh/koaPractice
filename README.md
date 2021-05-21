@@ -5,19 +5,21 @@
 * docker
 
 ### Run project
- 1 - run <code> npm run docker:up</code> to run neo4j docker container
- 2 - connect to your neo4j server and create a new database with custom name
- 3 - run <code> npm run neo4j:migrate:run</code> to run neo4j migrations
- 4 - <code> npm start </code> run project
+ * run <code>npm install</code>
+ * run <code> npm run docker:up</code> to run neo4j docker container
+ * connect to your neo4j server and create a new database with custom name
+ * run <code> npm run neo4j:migrate:run</code> to run neo4j migrations
+ * run <code>npm run build</code> and <code>npm start </code> to run project
+ * run <code>npm run dev</code> to run dev mode
 
 ### Test 
 * <code> npm run test</code> run tests
 * <code> npm run test:coverage</code> check test coverage
 
 ### Migration commands
-* <code> npm run neo4j:migrate:run </code> run all migrations
-* <code> Index=[number] npm run neo4j:migrate:rollback </code> rollback migration
-* <code> Index=zero npm run neo4j:migrate:rollback </code> rollback all migrations
+* <code> npm run neo4j:migrate:run</code> run all migrations
+* <code> Index=[number] npm run neo4j:migrate:rollback</code> rollback migration
+* <code> Index=zero npm run neo4j:migrate:rollback</code> rollback all migrations
 
 ### Env file variables
 | Variable                |  Default value                                    | Comment                                   |
