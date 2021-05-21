@@ -28,10 +28,8 @@ RUN npm install
 
 ADD  . /app
 
-RUN npm run neo4j:migrate:run
-
 RUN npm run build
 
 EXPOSE $ARG_PORT
 
-CMD [ "npm", "start" ]
+CMD [ "npm", "migrate:start" ]

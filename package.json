@@ -6,6 +6,7 @@
   "repository": "https://github.com/OlehSh/koaPractice",
   "scripts": {
     "start": "node ./dist/index.js",
+    "migrate:start": "npm run neo4j:migrate:run && npm start",
     "build": "tsc",
     "dev": "cross-env LOGLEVEL=debug ts-node-dev --inspect -- ./src/index.ts",
     "neo4j:migrate:run": "neo4j-data-migrate app",
