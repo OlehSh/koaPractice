@@ -36,4 +36,6 @@ node_modules/
 .env
 src/tests/.env
 
+/dist
+
 
