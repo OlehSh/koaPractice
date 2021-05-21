@@ -32,4 +32,4 @@ RUN npm run build
 
 EXPOSE $ARG_PORT
 
-CMD [ "npm", "migrate:start" ]
+CMD [ "npm", "run", "migrate:start" ]
