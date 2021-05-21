@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 
 dotenv.config({path: '.env'})
-
+console.log(process.env)
 module.exports = {
   neo4j: {
     dbName: process.env.NEO4J_DB_NAME || 'neo4j',
