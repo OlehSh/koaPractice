@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 const inTest = typeof global.it === 'function';
 const dotenvPath = inTest ? path.join(__dirname, 'tests', '.env') : path.join(__dirname, '..', '.env');
 dotenv.config({path: dotenvPath});
+// console.log(process.env)
 export default {
   saltRounds: process.env.SALT_ROUNDS || 16,
   port: process.env.PORT || 3000,
-  host: process.env.HOST || 'localhost',
   authStrategy: process.env.AUTH_STRATEGY || 'local',
   secretKey: process.env.SECRET_KEY || 'default_secret',
   neo4j: {
