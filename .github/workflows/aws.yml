@@ -60,15 +60,17 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG . \
-        --build-arg PORT=${{ secrets.PORT }} \
-        --build-arg NEO4J_PORT=${{ secrets.NEO4J_PORT }} \
-        --build-arg NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }} \
-        --build-arg NEO4J_USER=${{ secrets.NEO4J_USER }} \
-        --build-arg NEO4J_HOST=${{ secrets.NEO4J_HOST }} \
-        --build-arg NEO4J_DB_NAME=${{ secrets.NEO4J_DB_NAME }} \
-        --build-arg SALT_ROUNDS=${{ secrets.SALT_ROUNDS }} \
-        --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }} \
+        >
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        --build-arg PORT=${{ secrets.PORT }}
+        --build-arg NEO4J_PORT=${{ secrets.NEO4J_PORT }}
+        --build-arg NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
+        --build-arg NEO4J_USER=${{ secrets.NEO4J_USER }}
+        --build-arg NEO4J_HOST=${{ secrets.NEO4J_HOST }}
+        --build-arg NEO4J_DB_NAME=${{ secrets.NEO4J_DB_NAME }}
+        --build-arg SALT_ROUNDS=${{ secrets.SALT_ROUNDS }}
+        --build-arg SECRET_KEY=${{ secrets.SECRET_KEY }}
+
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
