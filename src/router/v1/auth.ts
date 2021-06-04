@@ -49,20 +49,29 @@ auth.post('/login',
 auth.post('/signup',
   {validate: {type: CONTENT_TYPE.JSON, body: profileSignupBody}},
   async (ctx) => {
-    const profileInfo: ProfileBody = ctx.request.body as ProfileBody
-    const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
-    const {name, email, id} = await profileService.add({...profileInfo, password})
-    ctx.body = {name, email, id};
+    try {
+      const profileInfo: ProfileBody = ctx.request.body as ProfileBody
+      const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
+      const {name, email, id} = await profileService.add({...profileInfo, password})
+      ctx.body = {name, email, id};
+    } catch (e) {
+      ctx.throw('Signup error')
+    }
   })
 
 auth.post('/logout',
   koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
-    const token: string = ctx.header.authorization as string
-    const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
-    await sessionService.add(token, user.id)
-    ctx.body = "logged out";
+    try {
+      const token: string = ctx.header.authorization as string
+      const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
+      await sessionService.add(token, user.id)
+      ctx.body = "logged out";
+    } catch (e) {
+      ctx.throw('Logout Error')
+    }
+
   })
 
 export default auth;

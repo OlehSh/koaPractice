@@ -20,17 +20,25 @@ profile.post('/', koaPassport.authenticate('jwt', {session: false}), validateSes
 })
 
 profile.delete('/', koaPassport.authenticate('jwt', { session: false }), validateSession, async (ctx) => {
-  const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
-  const result: QueryResult = await profileService.delete(user.id);
-  ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-  ctx.body = 'success'
+  try {
+    const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
+    const result: QueryResult = await profileService.delete(user.id);
+    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
+    ctx.body = 'success'
+  } catch (e) {
+    ctx.throw('Delete Profile error')
+  }
 })
 
 profile.delete('/:id', koaPassport.authenticate('jwt', { session: false }), validateSession, async (ctx) => {
-  const result: QueryResult = await profileService.delete(ctx.params.id);
-  ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-  ctx.body = 'success'
-})
+  try {
+    const result: QueryResult = await profileService.delete(ctx.params.id);
+    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
+    ctx.body = 'success'
+  } catch (e) {
+    ctx.throw('Delete Profile error')
+  }
 
+})
 
 export default profile;
