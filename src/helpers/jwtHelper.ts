@@ -1,7 +1,19 @@
 import jwt from "jsonwebtoken";
 import env from "../env";
-import { ProfileData } from "../service/Profile";
+import { ProfileInfo } from "../service/Profile";
 
-export const createToken = (payload: Partial<ProfileData>) => {
-  return jwt.sign(payload, env.secretKey)
+export interface UserTokenDecoded {
+  id: string,
+  name: string,
+  email: string,
+  iat: number,
+  exp: number
+}
+
+export const createToken = (payload: Partial<ProfileInfo>) => {
+  return jwt.sign(payload, env.secretKey, { expiresIn: "60000"})
+}
+
+export const decodeToken = (payload: string) => {
+  return jwt.decode(payload.replace(/Bearer /i, ''))
 }

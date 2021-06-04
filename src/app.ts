@@ -14,7 +14,7 @@ app.keys = [env.secretKey];
 app.use(session({}, app));
 app.use(logger())
 app.use(koaPassport.initialize())
-
+app.use(koaPassport.session())
 initStrategy()
 app.use(async (ctx, next) => {
   try {

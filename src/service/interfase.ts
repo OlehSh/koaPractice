@@ -2,7 +2,9 @@ import { RELATION_DIRECTION } from "../constants/constants";
 
 export enum LABEL {
   PROFILE = 'Profile',
-  PERSON = 'Person'
+  PERSON = 'Person',
+  SESSION = 'Session',
+  TOKEN = 'Token'
 }
 export interface QueryParams {
   limit?: number,

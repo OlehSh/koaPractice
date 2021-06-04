@@ -31,3 +31,4 @@
 | NEO4J_USER              | neo4j                                             |                                           |
 | NEO4J_HOST              | localhost                                         |                                           |
 | NEO4J_DBNAME            | myapp                                             |                                           |
+| TOKEN_EXPIRE_TIME       | 1d                                                | JWT token expiration time                 |

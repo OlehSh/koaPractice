@@ -2,11 +2,11 @@ import { v4 } from "uuid"
 import { injectable } from "tsyringe";
 import { LABEL, QueryParams, Relation } from "./interfase";
 import Neo4jDriver from "../neo4jDriver";
-import { QueryResult } from "neo4j-driver";
-import { deleteRelationByNodesIdQuery, getRelationByNodesIdQuery, updateNodeByIdQuery } from "../helpers/cyferQueryHelper";
+import { QueryResult, Session } from "neo4j-driver";
+import { deleteRelationByNodesIdQuery, createAddNodeRelationQuery, updateNodeByIdQuery } from "../helpers/cyferQueryHelper";
 import { RELATION_DIRECTION } from "../constants/constants";
 
-interface PersonData {
+export interface PersonData {
   name: string,
   lastName: string,
   id: string,
@@ -18,6 +18,7 @@ export default class Person {
   constructor(private neo4j: Neo4jDriver) {}
 
   async fetchAll(queryParams: QueryParams = {}): Promise<QueryResult> {
+    const session: Session = await this.neo4j.getSession()
     const { limit, orderBy } = queryParams;
     let query = `MATCH (n:${LABEL.PERSON}) Return n`;
     if (orderBy) {
@@ -26,11 +27,12 @@ export default class Person {
     if (limit) {
       query = `${query} LIMIT ${limit}`
     }
-    return this.neo4j.session.run(query)
+    return session.run(query)
   }
 
   async fetch(id: string): Promise<PersonData | null> {
-    const queryResult = await this.neo4j.session.run(`MATCH( n:${LABEL.PERSON} { id: $id }) RETURN n`, {id})
+    const session: Session = await this.neo4j.getSession()
+    const queryResult = await session.run(`MATCH( n:${LABEL.PERSON} { id: $id }) RETURN n`, {id})
     if (!queryResult || !queryResult.records[0]) {
       return null;
     }
@@ -40,19 +42,20 @@ export default class Person {
   async add(data: Partial<PersonData>): Promise<PersonData> {
     const id: string = v4()
     const {name, lastName = '', relation } = data;
+    const session: Session = await this.neo4j.getSession()
+    const tx = session.beginTransaction();
     try {
-      const tx = this.neo4j.session.beginTransaction();
       const createQuery: QueryResult  = await tx.run(`CREATE ( n:${LABEL.PERSON} {id: $id, name: $name, lastName: $lastName } ) RETURN n`,
         {id, name, lastName: lastName });
       if (!createQuery.records || !createQuery.records.length) {
         await tx.rollback()
-        throw new Error ('QueryResult records missing')
+        throw Error ('QueryResult records missing')
       }
       const newPerson = createQuery.records[0].get('n').properties as PersonData;
 
       if (relation) {
         const {id: mId, type: relType, direction, description: relDescription = ''} = relation
-        const relQuery = getRelationByNodesIdQuery(LABEL.PERSON, LABEL.PERSON, {
+        const relQuery = createAddNodeRelationQuery(LABEL.PERSON, LABEL.PERSON, {
           type: relType,
           direction,
           props: {description: relDescription}
@@ -63,7 +66,7 @@ export default class Person {
       await tx.commit();
       return newPerson;
     } catch (e) {
-      console.log(e)
+      await tx.rollback()
       throw e
     }
   }
@@ -71,7 +74,8 @@ export default class Person {
   async update(id: string, data: Partial<PersonData> ): Promise<PersonData> {
     const {relation, ...props } = data
     const query = updateNodeByIdQuery(LABEL.PERSON, props)
-    const tx = this.neo4j.session.beginTransaction();
+    const session: Session = await this.neo4j.getSession()
+    const tx = session.beginTransaction();
     try {
       const queryResult: QueryResult = await tx.run(query, {id})
       if (!queryResult.records || queryResult.records.length ) {
@@ -80,7 +84,7 @@ export default class Person {
       const person = queryResult.records[0].get('n').properties as PersonData
       if(relation) {
         const { id: relId, type, direction, description } = relation;
-        const relQuery = getRelationByNodesIdQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
+        const relQuery = createAddNodeRelationQuery(LABEL.PERSON, LABEL.PERSON, {type, direction , props: {description}});
         const relResult: QueryResult = await tx.run(relQuery, { nId: id, mId: relId})
         person.relation = relResult.records[0].toObject() as Relation
       }
@@ -94,12 +98,14 @@ export default class Person {
   }
 
   async delete(id: string): Promise<QueryResult> {
-    return this.neo4j.session.run(`MATCH (n:${LABEL.PERSON} { id: $id }) DETACH DELETE n`, {id});
+    const session: Session = await this.neo4j.getSession()
+    return session.run(`MATCH (n:${LABEL.PERSON} { id: $id }) DETACH DELETE n`, {id});
   }
 
   async deleteRelation(id: string, relation: {id: string, nodeLabel: LABEL, relLabel: string, direction: RELATION_DIRECTION}): Promise<QueryResult> {
+    const session: Session = await this.neo4j.getSession()
     const { id: relNodeId, nodeLabel, direction, relLabel } = relation;
     const queryString = deleteRelationByNodesIdQuery(LABEL.PERSON, nodeLabel, {direction, type: relLabel})
-    return this.neo4j.session.run(queryString, {id, relNodeId})
+    return session.run(queryString, {id, relNodeId})
   }
 }

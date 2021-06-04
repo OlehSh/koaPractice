@@ -1,19 +1,15 @@
 import { RELATION_DIRECTION } from "../constants/constants";
-import { LABEL, QueryParams } from "../service/interfase";
+import { LABEL } from "../service/interfase";
 
 interface RelationParams {
   type: string,
   direction: RELATION_DIRECTION,
   props?: {[key: string]: any}
 }
-interface NodeParams {
-  label: LABEL,
-  id: string
-}
 
 const REPLACE_JSON_KEY_QUOTES_REGEXP = /"([^"]+)":/mg
 
-export const getRelationByNodesIdQuery = (firstNodeLabel: LABEL, secondNodeLabel: LABEL, relationParams: RelationParams): string => {
+export const createAddNodeRelationQuery = (firstNodeLabel: LABEL, secondNodeLabel: LABEL, relationParams: RelationParams): string => {
   const {type, direction, props } = relationParams
   const relKey = type.toUpperCase();
   let query = `MATCH (n:${firstNodeLabel} { id: $nId }) , (m:${secondNodeLabel} { id: $mId })`;
