@@ -17,9 +17,10 @@
 * <code> npm run test:coverage</code> check test coverage
 
 ### Migration commands
-* <code> npm run neo4j:migrate:run</code> run all migrations
-* <code> Index=[number] npm run neo4j:migrate:rollback</code> rollback migration
-* <code> Index=zero npm run neo4j:migrate:rollback</code> rollback all migrations
+IMPORTANT: without  --database migrations log will be saved to default db
+* <code> npm run neo4j:migrate:run -- --database [dbname]</code> run all migrations
+* <code> Index=[number] npm run neo4j:migrate:rollback -- --database [dbname]</code> rollback migration
+* <code> Index=zero npm run neo4j:migrate:rollback:all -- --database [dbname]</code> rollback all migrations
 
 ### Env file variables
 | Variable                |  Default value                                    | Comment                                   |

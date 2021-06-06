@@ -15,7 +15,6 @@ import { validateSession } from "../../midlware/sessionValidate";
 const auth = router();
 const profileService = container.resolve(Profile)
 const sessionService = container.resolve(Session)
-const koaPassportService = container.resolve(koaPassport.KoaPassport)
 
 interface ProfileBody extends ProfileData {
   repeatPassword: string
@@ -50,6 +49,7 @@ auth.post('/signup',
   {validate: {type: CONTENT_TYPE.JSON, body: profileSignupBody}},
   async (ctx) => {
     try {
+      // TODO check if user exists to handle error
       const profileInfo: ProfileBody = ctx.request.body as ProfileBody
       const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
       const {name, email, id} = await profileService.add({...profileInfo, password})
@@ -67,7 +67,7 @@ auth.post('/logout',
       const token: string = ctx.header.authorization as string
       const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
       await sessionService.add(token, user.id)
-      ctx.body = "logged out";
+      ctx.body = {message: "logged out"};
     } catch (e) {
       ctx.throw('Logout Error')
     }

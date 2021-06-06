@@ -57,7 +57,9 @@ export default class Profile {
       await tx.commit()
       return result.records[0].get('n').properties as ProfileData;
     } catch (e) {
-      await tx.rollback()
+      if (tx.isOpen()) {
+        await tx.rollback()
+      }
       throw e
     }
   }
@@ -73,7 +75,10 @@ export default class Profile {
       await tx.commit()
       return queryResult.records[0].get('n').properties as ProfileData;
     } catch (e) {
-      await tx.rollback()
+      if (tx.isOpen()) {
+        await tx.rollback()
+      }
+      console.log(e.message)
       throw e
     }
 
@@ -87,7 +92,9 @@ export default class Profile {
       await tx.commit()
       return result
     } catch (e) {
-      await tx.rollback()
+      if (tx.isOpen()) {
+        await tx.rollback()
+      }
       throw e
     }
   }

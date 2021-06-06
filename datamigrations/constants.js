@@ -1,6 +1,8 @@
+const path = require('path')
 const dotenv = require('dotenv');
+const dotenvPath = process.env.NODE_ENV === 'test' ? path.join(__dirname, '..', 'src', 'tests', '.env') : path.join(__dirname, '..', '.env')
 
-dotenv.config({path: '.env'})
+dotenv.config({path: dotenvPath})
 
 module.exports = {
   neo4j: {
