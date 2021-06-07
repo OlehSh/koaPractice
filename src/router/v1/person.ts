@@ -42,26 +42,17 @@ person.post('/:id',
   koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
-    try {
-      const {id} = ctx.params
-      ctx.body = await personService.update(id, ctx.request.body)
-      ctx.body = "success"
-    } catch (e) {
-      ctx.throw('Update person error')
-    }
-
+    const {id} = ctx.params
+    ctx.body = await personService.update(id, ctx.request.body)
+    ctx.body = "success"
   })
 
 person.delete('/:id', koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
-    try {
-      const result: QueryResult = await personService.delete(ctx.params.id);
-      ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-      ctx.body = 'success'
-    } catch (e) {
-      ctx.throw('Delete Person error')
-    }
+    const result: QueryResult = await personService.delete(ctx.params.id);
+    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
+    ctx.body = 'success'
   }
 )
 person.delete(
@@ -70,14 +61,10 @@ person.delete(
   koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
-    try {
-      const {id}: { id: string } = ctx.params;
-      const {nodeId, direction, nodeLabel, relLabel}: DeleteRelationBody = ctx.request.body;
-      const result = await personService.deleteRelation(id, {id: nodeId, nodeLabel, relLabel, direction});
-      ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-      ctx.body = 'success'
-    } catch (e) {
-      ctx.throw('Delete relation error')
-    }
+    const {id}: { id: string } = ctx.params;
+    const {nodeId, direction, nodeLabel, relLabel}: DeleteRelationBody = ctx.request.body;
+    const result = await personService.deleteRelation(id, {id: nodeId, nodeLabel, relLabel, direction});
+    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
+    ctx.body = 'success'
   })
 export default person;

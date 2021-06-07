@@ -29,12 +29,15 @@ export default class Profile {
     return session.run(query)
   }
 
-  async fetch(id: string): Promise<ProfileInfo> {
+  async fetch(id: string): Promise<ProfileInfo | null> {
     const session: Session = await this.neo4j.getSession()
     const tx: Transaction = session.beginTransaction();
     try {
       const queryResult = await tx.run('MATCH (n:Profile { id: $id }) RETURN n', {id})
       await tx.commit()
+      if (!queryResult.records.length) {
+        return null
+      }
       return queryResult.records[0].get('n').properties as ProfileInfo
     } catch (e) {
       if (tx.isOpen()) {
@@ -87,6 +90,7 @@ export default class Profile {
   async delete(id: string): Promise<QueryResult> {
     const session: Session = await this.neo4j.getSession()
     const tx: Transaction = session.beginTransaction();
+    console.log('DELETE BY ID', id)
     try {
       const result =  await tx.run(`MATCH (n:Profile { id: $id }) DETACH DELETE n`, {id});
       await tx.commit()

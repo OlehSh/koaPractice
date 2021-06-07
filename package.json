@@ -13,7 +13,7 @@
     "neo4j:migrate:rollback:all": "neo4j-data-migrate app zero",
     "test:migrate": "NODE_ENV='test' neo4j-data-migrate app --database myapptest && NODE_ENV='test' neo4j-data-migrate test --database myapptest",
     "test:migrate:rollback": "NODE_ENV='test' neo4j-data-migrate app zero --database myapptest && NODE_ENV='test' neo4j-data-migrate test zero --database myapptest",
-    "test": "npm run test:migrate  && mocha --timeout 30000 --exit -r ts-node/register 'src/tests/**/**.test.ts' && npm run test:migrate:rollback",
+    "test": "npm run test:migrate; mocha --timeout 10000 --exit -r ts-node/register 'src/tests/**/**.test.ts'; npm run test:migrate:rollback",
     "test:coverage": "nyc npm run test",
     "docker:up": "docker-compose -f ./docker-compose.yaml up --build",
     "release": "release-it --no-npm"

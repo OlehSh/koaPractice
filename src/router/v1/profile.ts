@@ -31,13 +31,10 @@ profile.delete('/', koaPassport.authenticate('jwt', { session: false }), validat
 })
 
 profile.delete('/:id', koaPassport.authenticate('jwt', { session: false }), validateSession, async (ctx) => {
-  try {
-    const result: QueryResult = await profileService.delete(ctx.params.id);
-    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-    ctx.body = 'success'
-  } catch (e) {
-    ctx.throw('Delete Profile error')
-  }
+  const result: QueryResult = await profileService.delete(ctx.params.id);
+  console.log("RESULT", result)
+  ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
+  ctx.body = 'success'
 
 })
 

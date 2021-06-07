@@ -30,48 +30,35 @@ auth.prefix('/auth/')
 auth.post('/login',
   {validate: {type: CONTENT_TYPE.JSON, body: loginBody}},
   async (ctx) => {
-    try {
-      const {email, password} = ctx.request.body as LoginBody;
-      const profile: ProfileData | null = await profileService.fetchAuth({email});
-      ctx.assert(profile, 404, 'Profile not found')
-      const compare = await bcrypt.compare(password, profile!.password)
-      ctx.assert(compare, 401, 'Incorrect password')
-      const {name, id} = profile!
-      const token = createToken({id, name, email});
-      ctx.body = {token}
-    } catch (e) {
-      ctx.throw('Login error')
-    }
-
+    const {email, password} = ctx.request.body as LoginBody;
+    const profile: ProfileData | null = await profileService.fetchAuth({email});
+    ctx.assert(profile, 404, 'Profile not found')
+    const compare = await bcrypt.compare(password, profile!.password)
+    ctx.assert(compare, 401, 'Incorrect password')
+    const {name, id} = profile!
+    const token = createToken({id, name, email});
+    ctx.body = {token}
   })
 
 auth.post('/signup',
   {validate: {type: CONTENT_TYPE.JSON, body: profileSignupBody}},
   async (ctx) => {
-    try {
-      // TODO check if user exists to handle error
-      const profileInfo: ProfileBody = ctx.request.body as ProfileBody
-      const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
-      const {name, email, id} = await profileService.add({...profileInfo, password})
-      ctx.body = {name, email, id};
-    } catch (e) {
-      ctx.throw('Signup error')
-    }
+    // TODO check if user exists to handle error
+    const profileInfo: ProfileBody = ctx.request.body as ProfileBody
+    const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
+    const {name, email, id} = await profileService.add({...profileInfo, password})
+    ctx.body = {name, email, id};
+
   })
 
 auth.post('/logout',
   koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
-    try {
-      const token: string = ctx.header.authorization as string
-      const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
-      await sessionService.add(token, user.id)
-      ctx.body = {message: "logged out"};
-    } catch (e) {
-      ctx.throw('Logout Error')
-    }
-
+    const token: string = ctx.header.authorization as string
+    const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
+    await sessionService.add(token, user.id)
+    ctx.body = {message: "logged out"};
   })
 
 export default auth;

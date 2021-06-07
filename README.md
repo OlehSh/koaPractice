@@ -13,6 +13,8 @@
  * run <code>npm run dev</code> to run dev mode
 
 ### Test 
+* <code>test:migrate</code> run migrations for test database (same as app but delete all nodes before tests)
+* <code>test:migrate:rollback</code> rollback migrations in test db
 * <code> npm run test</code> run tests
 * <code> npm run test:coverage</code> check test coverage
 
