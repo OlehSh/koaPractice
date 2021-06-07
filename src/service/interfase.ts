@@ -1,11 +1,17 @@
 import { RELATION_DIRECTION } from "../constants/constants";
 
-export enum LABEL {
+export enum NODE {
   PROFILE = 'Profile',
   PERSON = 'Person',
-  SESSION = 'Session',
   TOKEN = 'Token'
 }
+
+export enum RELATION {
+  SESSION = 'Session',
+  SPOUSE = "SPOUSE",
+  CHILD = "CHILD"
+}
+
 export interface QueryParams {
   limit?: number,
   orderBy?: string,

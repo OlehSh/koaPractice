@@ -11,5 +11,10 @@ module.exports = {
     port: process.env.NEO4J_PORT || 7687,
     user: process.env.NEO4J_USER || 'neo4j',
     password: process.env.NEO4J_PASSWORD || ''
-  }
+  },
+  nodes: [
+    'Profile',
+    'Person',
+    'Token'
+  ]
 }

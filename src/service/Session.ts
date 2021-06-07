@@ -1,6 +1,6 @@
 import { v4 } from "uuid"
 import { injectable } from "tsyringe";
-import { LABEL, QueryParams } from "./interfase";
+import { NODE, RELATION, QueryParams } from "./interfase";
 import Neo4jDriver from "../neo4jDriver";
 import { Session as Neo4jSession, QueryResult, Transaction, Record } from "neo4j-driver";
 
@@ -57,7 +57,7 @@ export default class Session {
     try {
       const id: string = v4()
       const queryResult = await tx.run(
-        `MATCH (u:${LABEL.PROFILE} { id: $userId}) CREATE (t:${LABEL.TOKEN} {id: $id, token: $token, myVar: 'test', active: $active})<-[r:${LABEL.SESSION}]-(u) RETURN t`,
+        `MATCH (u:${NODE.PROFILE} { id: $userId}) CREATE (t:${NODE.TOKEN} {id: $id, token: $token, myVar: 'test', active: $active})<-[r:${RELATION.SESSION}]-(u) RETURN t`,
         {id, token, active: IS_ACTIVE.FALSE, userId})
       await tx.commit()
       return queryResult.records[0].get('t').properties as SessionInfo;

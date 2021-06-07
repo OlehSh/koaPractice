@@ -1,5 +1,5 @@
 import { RELATION_DIRECTION } from "../constants/constants";
-import { LABEL } from "../service/interfase";
+import { NODE } from "../service/interfase";
 
 interface RelationParams {
   type: string,
@@ -9,7 +9,7 @@ interface RelationParams {
 
 const REPLACE_JSON_KEY_QUOTES_REGEXP = /"([^"]+)":/mg
 
-export const createAddNodeRelationQuery = (firstNodeLabel: LABEL, secondNodeLabel: LABEL, relationParams: RelationParams): string => {
+export const createAddNodeRelationQuery = (firstNodeLabel: NODE, secondNodeLabel: NODE, relationParams: RelationParams): string => {
   const {type, direction, props } = relationParams
   const relKey = type.toUpperCase();
   let query = `MATCH (n:${firstNodeLabel} { id: $nId }) , (m:${secondNodeLabel} { id: $mId })`;
@@ -34,7 +34,7 @@ export const createAddNodeRelationQuery = (firstNodeLabel: LABEL, secondNodeLabe
   return query;
 }
 
-export const updateNodeByIdQuery = (label: LABEL, params: {[key: string]: any}): string => {
+export const updateNodeByIdQuery = (label: NODE, params: {[key: string]: any}): string => {
   let query = `MATCH (n:${label} { id: $id})`
   if (params) {
     query = `${query} SET n += ${JSON.stringify(params).replace(REPLACE_JSON_KEY_QUOTES_REGEXP, '$1:')}`;
@@ -43,7 +43,7 @@ export const updateNodeByIdQuery = (label: LABEL, params: {[key: string]: any}):
   return query
 }
 
-export const deleteRelationByNodesIdQuery = (firstNodeLabel: LABEL,  secondNodeLabel: LABEL, relationParams: RelationParams) => {
+export const deleteRelationByNodesIdQuery = (firstNodeLabel: NODE,  secondNodeLabel: NODE, relationParams: RelationParams) => {
   const {direction, type } = relationParams
   const relKey = type.toUpperCase()
   let query = `MATCH (n:${firstNodeLabel} {id: $id})`
