@@ -1,12 +1,12 @@
 import { RELATION_DIRECTION } from "../constants/constants";
 
-export enum NODE {
+export enum NODE_LABEL {
   PROFILE = 'Profile',
   PERSON = 'Person',
   TOKEN = 'Token'
 }
 
-export enum RELATION {
+export enum RELATION_LABEL {
   SESSION = 'Session',
   SPOUSE = "SPOUSE",
   CHILD = "CHILD"

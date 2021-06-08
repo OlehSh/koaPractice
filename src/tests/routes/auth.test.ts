@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import supertest from 'supertest'
 import app from '../../app';
 import { expect } from 'chai';
-import user from '../mock/user.json'
+import { testUser as user } from '../mock/user.json'
 
 describe('Auth', () => {
   let request: supertest.SuperTest<supertest.Test>

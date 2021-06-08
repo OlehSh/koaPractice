@@ -1,7 +1,7 @@
 const {neo4j, nodes} = require('../constants')
 
 module.exports = {
-  name: 'Add profile indexes',
+  name: 'Clear Test DB',
   forward: async (driver) => {
     const session = driver.session({
       database: neo4j.dbName

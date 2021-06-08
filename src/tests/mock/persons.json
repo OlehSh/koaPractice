@@ -1,0 +1,17 @@
+{
+  "testPerson1": {
+    "name": "TestPerson",
+    "lastName": "TEstLN"
+  },
+  "testPerson2": {
+    "name": "TestPerson2",
+    "lastName": "TEstLN2",
+    "relation": {}
+  },
+  "personRelationChild": {
+    "type": "SPOUSE",
+    "nodeLabel": "Person",
+    "direction": 2,
+    "description": " "
+  }
+}

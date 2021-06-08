@@ -1,6 +1,14 @@
 {
-  "name": "testUser",
-  "email": "test@test.com",
-  "password": "1234567844",
-  "repeatPassword": "1234567844"
+  "testUser": {
+    "name": "testUser",
+    "email": "test@test.com",
+    "password": "1234567844",
+    "repeatPassword": "1234567844"
+  },
+  "personTestUser": {
+    "name": "testUser",
+    "email": "p_test@test.com",
+    "password": "1234567844",
+    "repeatPassword": "1234567844"
+  }
 }

@@ -1,5 +1,5 @@
 import { RELATION_DIRECTION } from "../constants/constants";
-import { NODE } from "../service/interfase";
+import { NODE_LABEL } from "../service/interfase";
 
 interface RelationParams {
   type: string,
@@ -9,7 +9,7 @@ interface RelationParams {
 
 const REPLACE_JSON_KEY_QUOTES_REGEXP = /"([^"]+)":/mg
 
-export const createAddNodeRelationQuery = (firstNodeLabel: NODE, secondNodeLabel: NODE, relationParams: RelationParams): string => {
+export const createAddNodeRelationQuery = (firstNodeLabel: NODE_LABEL, secondNodeLabel: NODE_LABEL, relationParams: RelationParams): string => {
   const {type, direction, props } = relationParams
   const relKey = type.toUpperCase();
   let query = `MATCH (n:${firstNodeLabel} { id: $nId }) , (m:${secondNodeLabel} { id: $mId })`;
@@ -34,7 +34,7 @@ export const createAddNodeRelationQuery = (firstNodeLabel: NODE, secondNodeLabel
   return query;
 }
 
-export const updateNodeByIdQuery = (label: NODE, params: {[key: string]: any}): string => {
+export const updateNodeByIdQuery = (label: NODE_LABEL, params: {[key: string]: any}): string => {
   let query = `MATCH (n:${label} { id: $id})`
   if (params) {
     query = `${query} SET n += ${JSON.stringify(params).replace(REPLACE_JSON_KEY_QUOTES_REGEXP, '$1:')}`;
@@ -43,20 +43,20 @@ export const updateNodeByIdQuery = (label: NODE, params: {[key: string]: any}): 
   return query
 }
 
-export const deleteRelationByNodesIdQuery = (firstNodeLabel: NODE,  secondNodeLabel: NODE, relationParams: RelationParams) => {
+export const deleteRelationByNodesIdQuery = (firstNodeLabel: NODE_LABEL,  secondNodeLabel: NODE_LABEL, relationParams: RelationParams) => {
   const {direction, type } = relationParams
   const relKey = type.toUpperCase()
   let query = `MATCH (n:${firstNodeLabel} {id: $id})`
+  // TODO remove switch case
   switch (direction) {
     case RELATION_DIRECTION.IN:
-      query = `${query}<-[r:${relKey}]-(m:${secondNodeLabel} {id: $id}) DELETE r`;
+      query = `${query}<-[r:${relKey}]-(m:${secondNodeLabel} {id: $relNodeId}) DELETE r`;
       break
     case RELATION_DIRECTION.OUT:
-      query = `${query}-[r:${relKey}]->(m:${secondNodeLabel} {id: $id}) DELETE r`
+      query = `${query}-[r:${relKey}]->(m:${secondNodeLabel} {id: $relNodeId}) DELETE r`
       break
     case RELATION_DIRECTION.TWO_WAY:
-      query = `${query}-[r:${relKey}]->(m:${secondNodeLabel} {id: $id}),`;
-      query = `${query}<-[r_in:${relKey}]-(m:${secondNodeLabel} {id: $id}) DELETE r, r_in`;
+      query = `${query}-[r:${relKey}]-(m:${secondNodeLabel} {id: $relNodeId}) DELETE r`;
       break
     default:
       throw new Error('Relation Direction missing')

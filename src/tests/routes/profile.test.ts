@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import supertest from 'supertest'
 import app from '../../app';
 import { expect } from 'chai';
-import user from '../mock/user.json'
+import { testUser as user } from '../mock/user.json'
 
 describe('Profile', () => {
   let request: supertest.SuperTest<supertest.Test>
@@ -66,8 +66,6 @@ describe('Profile', () => {
       .delete(`/v1/profile/${userId}`)
       .auth(token, {type: 'bearer'})
       .send()
-    console.log('404 TEST RESP', response.status)
-    console.log('4040 TEST RESP', response.body)
     expect(response.status).eql(404)
     expect(response.body.details).eql("Profile not found")
   })

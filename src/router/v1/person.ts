@@ -13,28 +13,29 @@ const person = router();
 const personService = container.resolve(Person)
 person.prefix('/person/')
 
-person.get('/', koaPassport.authenticate('jwt', {session: false}), (ctx) => {
-  ctx.body = 'get persons'
-})
+person.get('/',
+  koaPassport.authenticate('jwt', {session: false}),
+  validateSession,
+  (ctx) => {
+    ctx.body = 'get persons'
+  })
 
-person.get('/:id', koaPassport.authenticate('jwt', {session: false}), async (ctx) => {
-  const {id} = ctx.params
-  ctx.body = await personService.fetch(id)
-  ctx.body = "success"
-})
+person.get('/:id',
+  koaPassport.authenticate('jwt', {session: false}),
+  validateSession,
+  async (ctx) => {
+    const {id} = ctx.params
+    ctx.body = await personService.fetch(id)
+    ctx.body = "success"
+  })
 
 person.post('/',
   {validate: {type: CONTENT_TYPE.JSON, body: personCreateBodyValidate}},
   koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
-    try {
-      const {name, lastName, relation} = ctx.request.body
-      ctx.body = await personService.add({name, lastName, relation})
-      ctx.body = "success"
-    } catch (e) {
-      ctx.throw('Create person error')
-    }
+    const { name, lastName, relation } = ctx.request.body
+    ctx.body = await personService.add({name, lastName, relation})
   })
 
 person.post('/:id',
@@ -44,15 +45,14 @@ person.post('/:id',
   async (ctx) => {
     const {id} = ctx.params
     ctx.body = await personService.update(id, ctx.request.body)
-    ctx.body = "success"
   })
 
 person.delete('/:id', koaPassport.authenticate('jwt', {session: false}),
   validateSession,
   async (ctx) => {
     const result: QueryResult = await personService.delete(ctx.params.id);
-    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-    ctx.body = 'success'
+    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Person not found')
+    ctx.body = {nodesDeleted: result.summary.counters.updates().nodesDeleted}
   }
 )
 person.delete(
@@ -64,7 +64,7 @@ person.delete(
     const {id}: { id: string } = ctx.params;
     const {nodeId, direction, nodeLabel, relLabel}: DeleteRelationBody = ctx.request.body;
     const result = await personService.deleteRelation(id, {id: nodeId, nodeLabel, relLabel, direction});
-    ctx.assert(result.summary.counters.updates().nodesDeleted !== 0, 404, 'Profile not found')
-    ctx.body = 'success'
+    ctx.assert(result.summary.counters.updates().relationshipsDeleted !== 0, 404, 'Person relation not found')
+    ctx.body = {relationshipsDeleted: result.summary.counters.updates().relationshipsDeleted}
   })
 export default person;

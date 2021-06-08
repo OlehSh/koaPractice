@@ -1,4 +1,4 @@
-import Koa from 'koa';
+import Koa, { Context } from 'koa';
 import session from "koa-session";
 import koaBody from "koa-body";
 import logger from "koa-logger"
@@ -38,8 +38,7 @@ app.use(koaBody({
 
 app.use(api.middleware());
 
-app.on('error', (err, ctx) => {
-  console.log('ERROR', err);
+app.on('error', (err, ctx: Context) => {
   ctx.assert(err, err.status, err.message);
 });
 
