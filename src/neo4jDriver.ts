@@ -14,6 +14,10 @@ export default class Neo4jDriver {
         .then(data => {
           console.log('Neo4j session created', {database: env.neo4j.dbName, ...data})
         })
+        .catch(e => {
+          console.error("verifyConnectivity Error:", e)
+          throw e
+        })
     } catch (e) {
       console.error('Neo4j connection Error', e)
       throw e

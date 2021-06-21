@@ -108,7 +108,8 @@ export default class Person {
       if (tx.isOpen()) {
         await tx.rollback()
       }
-      throw e;
+      console.log(e)
+      throw new Error(`person Update error: ${e.message}`);
     }
 
   }
