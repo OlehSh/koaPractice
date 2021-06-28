@@ -1,9 +1,9 @@
 import 'reflect-metadata'
 import supertest from 'supertest'
-import app from '../../app';
+import app from '../../../app';
 import { expect } from 'chai';
-import { personTestUser as user } from '../mock/user.json'
-import { testPerson1, testPerson2, personRelationChild } from '../mock/persons.json'
+import { personTestUser as user } from '../../mock/user.json'
+import { testPerson1, testPerson2, personRelationChild } from '../../mock/persons.json'
 
 describe('Person', () => {
   let request: supertest.SuperTest<supertest.Test>
