@@ -77,7 +77,7 @@ export default class Person {
       }
       await tx.commit();
       return newPerson;
-    } catch (e) {
+    } catch (e: any) {
       if (tx.isOpen()) {
         await tx.rollback()
       }
@@ -104,14 +104,12 @@ export default class Person {
       }
       await tx.commit();
       return person
-    } catch (e) {
+    } catch (e: any) {
       if (tx.isOpen()) {
         await tx.rollback()
       }
-      console.log(e)
       throw new Error(`person Update error: ${e.message}`);
     }
-
   }
 
   async delete(id: string): Promise<QueryResult> {

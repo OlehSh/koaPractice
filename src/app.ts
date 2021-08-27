@@ -1,4 +1,10 @@
-import Koa, { Context } from 'koa';
+import Koa,
+{
+  ExtendableContext,
+  DefaultContext,
+  DefaultState,
+  Context
+} from 'koa';
 import session from "koa-session";
 import koaBody from "koa-body";
 import logger from "koa-logger"
@@ -16,10 +22,10 @@ app.use(logger())
 app.use(koaPassport.initialize())
 app.use(koaPassport.session())
 initStrategy()
-app.use(async (ctx, next) => {
+app.use(async (ctx: ExtendableContext & { state: DefaultState } & DefaultContext & { body: any; response: { body: any } }, next) => {
   try {
     await next();
-  } catch (err) {
+  } catch (err: any) {
     ctx.status = err.status || 500;
     ctx.body = {
       status: 'error',

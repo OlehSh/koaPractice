@@ -61,7 +61,7 @@ export default class Session {
         {id, token, active: IS_ACTIVE.FALSE, userId})
       await tx.commit()
       return queryResult.records[0].get('t').properties as SessionInfo;
-    } catch (e){
+    } catch (e: any){
       if (tx.isOpen()) {
         await tx.rollback()
       }

@@ -10,6 +10,7 @@ import bcrypt from "bcrypt"
 import env from "../../env";
 import koaPassport from "koa-passport";
 import { validateSession } from "../../midlware/sessionValidate";
+import {Context} from "koa";
 
 
 const auth = router();
@@ -29,20 +30,20 @@ auth.prefix('/auth/')
 
 auth.post('/login',
   {validate: {type: CONTENT_TYPE.JSON, body: loginBody}},
-  async (ctx) => {
+  async (ctx: Context) => {
     const {email, password} = ctx.request.body as LoginBody;
     const profile: ProfileData | null = await profileService.fetchAuth({email});
     ctx.assert(profile, 404, 'Profile not found')
-    const compare = await bcrypt.compare(password, profile!.password)
+    const compare = await bcrypt.compare(password, profile.password)
     ctx.assert(compare, 401, 'Incorrect password')
-    const {name, id} = profile!
+    const {name, id} = profile
     const token = createToken({id, name, email});
     ctx.body = {token}
   })
 
 auth.post('/signup',
   {validate: {type: CONTENT_TYPE.JSON, body: profileSignupBody}},
-  async (ctx) => {
+  async (ctx: Context) => {
     // TODO check if user exists to handle error
     const profileInfo: ProfileBody = ctx.request.body as ProfileBody
     const password = await bcrypt.hash(profileInfo.password, env.saltRounds)
@@ -54,7 +55,7 @@ auth.post('/signup',
 auth.post('/logout',
   koaPassport.authenticate('jwt', {session: false}),
   validateSession,
-  async (ctx) => {
+  async (ctx: Context) => {
     const token: string = ctx.header.authorization as string
     const user: UserTokenDecoded = ctx.state.user as UserTokenDecoded
     await sessionService.add(token, user.id)

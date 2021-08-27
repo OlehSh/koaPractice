@@ -18,7 +18,7 @@ export default class Neo4jDriver {
           console.error("verifyConnectivity Error:", e)
           throw e
         })
-    } catch (e) {
+    } catch (e: any) {
       console.error('Neo4j connection Error', e)
       throw e
     }

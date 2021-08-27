@@ -39,7 +39,7 @@ export default class Profile {
         return null
       }
       return queryResult.records[0].get('n').properties as ProfileInfo
-    } catch (e) {
+    } catch (e: any) {
       if (tx.isOpen()) {
         await tx.rollback()
       }
@@ -59,7 +59,7 @@ export default class Profile {
       }
       await tx.commit()
       return result.records[0].get('n').properties as ProfileData;
-    } catch (e) {
+    } catch (e: any) {
       if (tx.isOpen()) {
         await tx.rollback()
       }
@@ -77,7 +77,7 @@ export default class Profile {
         {id, name, email, password})
       await tx.commit()
       return queryResult.records[0].get('n').properties as ProfileData;
-    } catch (e) {
+    } catch (e: any) {
       if (tx.isOpen()) {
         await tx.rollback()
       }
@@ -94,7 +94,7 @@ export default class Profile {
       const result =  await tx.run(`MATCH (n:Profile { id: $id }) DETACH DELETE n`, {id});
       await tx.commit()
       return result
-    } catch (e) {
+    } catch (e: any) {
       if (tx.isOpen()) {
         await tx.rollback()
       }
