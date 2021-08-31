@@ -13,3 +13,8 @@ export enum RELATION_DIRECTION {
   IN = 1,
   TWO_WAY = 2
 }
+
+export enum GENDER {
+  MALE = "male",
+  FEMALE = "female"
+}

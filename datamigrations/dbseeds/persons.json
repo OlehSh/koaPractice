@@ -1,0 +1,361 @@
+{
+  "items": [
+    {
+      "id": 1,
+      "name": "Unicorn",
+      "lastName": "",
+      "description": "",
+      "gender": "female"
+    },
+    {
+      "id": 2,
+      "name": "Dworkin",
+      "lastName": "Barimen",
+      "gender": "male"
+    },
+    {
+      "id": 3,
+      "name": "Oberon",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 4,
+      "name": "Cymnea",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 5,
+      "name": "Finndo",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 6,
+      "name": "Osric",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 7,
+      "name": "Benedict",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 8,
+      "name": "Faiella",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 9,
+      "name": "Eric",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 10,
+      "name": "Corwin",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 11,
+      "name": "Caine",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 12,
+      "name": "Deirdre",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 13,
+      "name": "Clarissa",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 14,
+      "name": "Fiona",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id":15,
+      "name": "Bleys",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 16,
+      "name": "Brand",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 17,
+      "name": "Moins",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 18,
+      "name": "Llewella",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 19,
+      "name": "Dybele",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 20,
+      "name": "Flora",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 21,
+      "name": "Rilga",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 22,
+      "name": "Julian",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 23,
+      "name": "Gérard",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 24,
+      "name": "Harla",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 25,
+      "name": "Delwin",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 26,
+      "name": "Sand",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 27,
+      "name": "Paulette",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 28,
+      "name": "Random",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 29,
+      "name": "Mirelle",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 30,
+      "name": "Deela",
+      "lastName": "the Desacratrix",
+      "gender": "female"
+    },
+    {
+      "id": 31,
+      "name": "Dalt",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 32,
+      "name": "Kinta",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 33,
+      "name": "Coral",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 34,
+      "name": "Lintra",
+      "lastName": "the Hellmaid",
+      "gender": "female"
+    },
+    {
+      "id": 35,
+      "name": "Morganthe",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 36,
+      "name": "Martin",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 37,
+      "name": "Dara",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 38,
+      "name": "Merlin",
+      "lastName": "Corry",
+      "gender": "male"
+    },
+    {
+      "id": 39,
+      "name": "Jasra",
+      "lastName": "",
+      "gender": "female"
+    },
+    {
+      "id": 40,
+      "name": "Rinaldo",
+      "pseudonym": "Lucas Raynard",
+      "lastName": "",
+      "gender": "male"
+    },
+    {
+      "id": 41,
+      "name": "Sawall",
+      "lastName": "Gramble"
+    },
+    {
+      "id": 42,
+      "name": "Mandor",
+      "lastName": "",
+      "parent": ["Sawall", "Dara"]
+    },
+    {
+      "id": 43,
+      "name": "Swayvil",
+      "lastName": ""
+    }
+  ],
+  "inRelations": [
+    {
+      "nodeLabel": "World",
+      "relationLabel": "Character",
+      "nodeName": "Amber Chronicles"
+    }
+  ],
+  "outRelations": [
+    {
+      "nodeLabel": "Person",
+      "relationLabel": "Child",
+      "nodeIds": [
+        {
+          "parentIds": [1, 2],
+          "childrenIds": [3]
+        },
+        {
+          "parentIds": [3, 4],
+          "children": [5, 6, 7 ]
+        },
+        {
+          "parentIds": [3, 8],
+          "children": [9, 10, 11, 12]
+        },
+        {
+          "parentIds": [3, 13],
+          "children": [14, 15, 16 ]
+        },
+        {
+          "parentIds": [3, 17],
+          "children": [18]
+        },
+        {
+          "parentIds": [3, 19],
+          "children": [20]
+        },
+        {
+          "parentIds": [3, 21],
+          "children": [22, 23]
+        },
+        {
+          "parentIds": [3, 24],
+          "children": [25, 26]
+        },
+        {
+          "parentIds": [3, 27],
+          "children": [28, 29]
+        },
+        {
+          "parentIds": [3, 30],
+          "children": [31]
+        },
+        {
+          "parentIds": [3, 32],
+          "children": [33]
+        },
+        {
+          "parentIds": [28, 35],
+          "children":[36]
+        },
+        {
+          "parentIds": [10, 37],
+          "children":[38]
+        },
+        {
+          "parentIds":  [16, 39],
+          "children":[40]
+        },
+        {
+          "parentIds":  [37, 41],
+          "children":[42]
+        }
+      ]
+    }
+  ],
+  "twoWayRelations": [
+    {
+      "nodeLabel": "Person",
+      "relationLabel": "Spouse",
+      "nodePairIds": [
+        [1, 2],
+        [3, 4],
+        [3, 8],
+        [3, 13],
+        [3, 17],
+        [3, 19],
+        [3, 21],
+        [3, 24],
+        [3, 27],
+        [3, 30],
+        [3, 32],
+        [7, 34],
+        [10, 37],
+        [16, 39],
+        [28, 35],
+        [37, 41]
+      ]
+    }
+  ]
+}

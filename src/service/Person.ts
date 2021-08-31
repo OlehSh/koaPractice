@@ -2,14 +2,15 @@ import { v4 } from "uuid"
 import { injectable } from "tsyringe";
 import { NODE_LABEL, QueryParams, Relation } from "./interfase";
 import Neo4jDriver from "../neo4jDriver";
-import { QueryResult, Record, Session } from "neo4j-driver";
+import { QueryResult, Session } from "neo4j-driver";
 import { deleteRelationByNodesIdQuery, createAddNodeRelationQuery, updateNodeByIdQuery } from "../helpers/cyferQueryHelper";
-import { RELATION_DIRECTION } from "../constants/constants";
+import { RELATION_DIRECTION, GENDER } from "../constants/constants";
 
 export interface PersonData {
   name: string,
   lastName: string,
   id: string,
+  gender: GENDER | undefined,
   relation: Relation
 }
 

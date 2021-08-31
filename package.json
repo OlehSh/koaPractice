@@ -9,7 +9,7 @@
     "build": "tsc",
     "dev": "cross-env LOGLEVEL=debug tsnd --inspect -- ./src/index.ts",
     "neo4j:migrate:run": "neo4j-data-migrate app",
-    "neo4j:migrate:rollback": "neo4j-data-migrate app ${Index}",
+    "neo4j:migrate:rollback": "neo4j-data-migrate app ${index}",
     "neo4j:migrate:rollback:all": "neo4j-data-migrate app zero",
     "test:migrate": "NODE_ENV='test' neo4j-data-migrate app --database myapptest && NODE_ENV='test' neo4j-data-migrate test --database myapptest",
     "test:migrate:rollback": "NODE_ENV='test' neo4j-data-migrate app zero --database myapptest && NODE_ENV='test' neo4j-data-migrate test zero --database myapptest",

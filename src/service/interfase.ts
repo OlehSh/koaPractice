@@ -3,13 +3,15 @@ import { RELATION_DIRECTION } from "../constants/constants";
 export enum NODE_LABEL {
   PROFILE = 'Profile',
   PERSON = 'Person',
-  TOKEN = 'Token'
+  TOKEN = 'Token',
+  WORLD='World'
 }
 
 export enum RELATION_LABEL {
   SESSION = 'Session',
-  SPOUSE = "SPOUSE",
-  CHILD = "CHILD"
+  SPOUSE = "Spouse",
+  CHILD = "Child",
+  CHARACTER = "Character"
 }
 
 export interface QueryParams {
