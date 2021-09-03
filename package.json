@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node ./dist/index.js",
     "build": "tsc",
-    "dev": "cross-env LOGLEVEL=debug tsnd --inspect -- ./src/index.ts",
+    "dev": "cross-env LOGLEVEL=debug tsnd --inspect --rs -- ./src/index.ts",
     "neo4j:migrate:run": "neo4j-data-migrate app",
     "neo4j:migrate:rollback": "neo4j-data-migrate app ${index}",
     "neo4j:migrate:rollback:all": "neo4j-data-migrate app zero",
