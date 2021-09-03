@@ -10,8 +10,9 @@ export interface PersonData {
   name: string,
   lastName: string,
   id: string,
-  gender: GENDER | undefined,
-  relation: Relation
+  relation: Relation,
+  gender?: GENDER,
+  description?: string
 }
 
 export interface PersonResponse {

@@ -11,8 +11,10 @@ export enum RELATION_LABEL {
   SESSION = 'Session',
   SPOUSE = "Spouse",
   CHILD = "Child",
-  CHARACTER = "Character"
+  CHARACTER = "Character",
+  HALF_SIBLING = "HalfSibling"
 }
+
 
 export interface QueryParams {
   limit?: number,

@@ -1,5 +1,5 @@
 import { RELATION_DIRECTION } from "../constants/constants";
-
+// This is WIP Class I want to use in future !!!
 
 interface QueryParams  {[key: string]: string | number | string[] | number[]}
 

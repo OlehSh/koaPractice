@@ -1,5 +1,5 @@
 {
-  "items": [
+  "persons": [
     {
       "id": 1,
       "name": "Unicorn",
@@ -238,98 +238,93 @@
     {
       "id": 40,
       "name": "Rinaldo",
-      "pseudonym": "Lucas Raynard",
+      "description": "Lucas Raynard",
       "lastName": "",
       "gender": "male"
     },
     {
       "id": 41,
       "name": "Sawall",
-      "lastName": "Gramble"
+      "lastName": "Gramble",
+      "gender": "male"
     },
     {
       "id": 42,
       "name": "Mandor",
       "lastName": "",
-      "parent": ["Sawall", "Dara"]
+      "gender": "male"
     },
     {
       "id": 43,
       "name": "Swayvil",
-      "lastName": ""
+      "lastName": "",
+      "gender": "male"
     }
   ],
-  "inRelations": [
-    {
-      "nodeLabel": "World",
-      "relationLabel": "Character",
-      "nodeName": "Amber Chronicles"
-    }
-  ],
-  "outRelations": [
+  "oneWayRelations": [
     {
       "nodeLabel": "Person",
       "relationLabel": "Child",
       "nodeIds": [
         {
-          "parentIds": [1, 2],
-          "childrenIds": [3]
+          "from": [1, 2],
+          "to": [3]
         },
         {
-          "parentIds": [3, 4],
-          "children": [5, 6, 7 ]
+          "from": [3, 4],
+          "to": [5, 6, 7 ]
         },
         {
-          "parentIds": [3, 8],
-          "children": [9, 10, 11, 12]
+          "from": [3, 8],
+          "to": [9, 10, 11, 12]
         },
         {
-          "parentIds": [3, 13],
-          "children": [14, 15, 16 ]
+          "from": [3, 13],
+          "to": [14, 15, 16 ]
         },
         {
-          "parentIds": [3, 17],
-          "children": [18]
+          "from": [3, 17],
+          "to": [18]
         },
         {
-          "parentIds": [3, 19],
-          "children": [20]
+          "from": [3, 19],
+          "to": [20]
         },
         {
-          "parentIds": [3, 21],
-          "children": [22, 23]
+          "from": [3, 21],
+          "to": [22, 23]
         },
         {
-          "parentIds": [3, 24],
-          "children": [25, 26]
+          "from": [3, 24],
+          "to": [25, 26]
         },
         {
-          "parentIds": [3, 27],
-          "children": [28, 29]
+          "from": [3, 27],
+          "to": [28, 29]
         },
         {
-          "parentIds": [3, 30],
-          "children": [31]
+          "from": [3, 30],
+          "to": [31]
         },
         {
-          "parentIds": [3, 32],
-          "children": [33]
+          "from": [3, 32],
+          "to": [33]
         },
         {
-          "parentIds": [28, 35],
-          "children":[36]
+          "from": [28, 35],
+          "to":[36]
         },
         {
-          "parentIds": [10, 37],
-          "children":[38]
+          "from": [10, 37],
+          "to":[38]
         },
         {
-          "parentIds":  [16, 39],
-          "children":[40]
+          "from":  [16, 39],
+          "to":[40]
         },
         {
-          "parentIds":  [37, 41],
-          "children":[42]
+          "from":  [37, 41],
+          "to":[42]
         }
       ]
     }
@@ -338,23 +333,25 @@
     {
       "nodeLabel": "Person",
       "relationLabel": "Spouse",
-      "nodePairIds": [
-        [1, 2],
-        [3, 4],
-        [3, 8],
-        [3, 13],
-        [3, 17],
-        [3, 19],
-        [3, 21],
-        [3, 24],
-        [3, 27],
-        [3, 30],
-        [3, 32],
-        [7, 34],
-        [10, 37],
-        [16, 39],
-        [28, 35],
-        [37, 41]
+      "nodeIds": [
+        [[1], [2]],
+        [[3], [4, 8, 13, 17, 19, 21, 24, 27, 30, 32]],
+        [[7], [34]],
+        [[37], [10, 41]],
+        [[16], [39]],
+        [[28], [35]]
+      ]
+    },
+    {
+      "nodeLabel": "Person",
+      "relationLabel": "Sibling",
+      "nodeIds": [
+        [[5, 6, 7], [0]],
+        [[9, 10, 11, 12], [0]],
+        [[14, 15, 16], [0]],
+        [[22], [23]],
+        [[25], [26]],
+        [[28], [29]]
       ]
     }
   ]
