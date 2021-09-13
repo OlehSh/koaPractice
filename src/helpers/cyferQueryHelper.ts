@@ -43,7 +43,7 @@ export const updateNodeByIdQuery = (label: NODE_LABEL, params: {[key: string]: a
   return query
 }
 
-export const deleteRelationByNodesIdQuery = (firstNodeLabel: NODE_LABEL,  secondNodeLabel: NODE_LABEL, relationParams: RelationParams) => {
+export const deleteRelationByNodesIdQuery = (firstNodeLabel: NODE_LABEL,  secondNodeLabel: NODE_LABEL, relationParams: RelationParams): string => {
   const {direction, type } = relationParams
   const relKey = type.toUpperCase()
   let query = `MATCH (n:${firstNodeLabel} {id: $id})`
